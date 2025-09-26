@@ -12,13 +12,13 @@ const darkToggle = document.getElementById("darkToggle");
   // Apply dark mode 
   if (localStorage.getItem("darkMode") === "on") {
     document.body.classList.add("dark-mode");
-    darkToggle.textContent = "☀️ Dark OFF";
+    darkToggle.textContent = "☀️";
   }
 
   darkToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
-    darkToggle.textContent = isDark ? "☀️ Dark OFF" : "🌙 Dark ON";
+    darkToggle.textContent = isDark ? "☀️" : "🌙";
     localStorage.setItem("darkMode", isDark ? "on" : "off");
   });
 
