@@ -9,38 +9,38 @@ menuToggle.addEventListener("click", () => {
 
 const darkToggle = document.getElementById("darkToggle");
 
-  // Apply dark mode 
-  if (localStorage.getItem("darkMode") === "on") {
-    document.body.classList.add("dark-mode");
-    darkToggle.textContent = "☀️";
-  }
+// Apply dark mode 
+if (localStorage.getItem("darkMode") === "on") {
+  document.body.classList.add("dark-mode");
+  darkToggle.textContent = "☀️";
+}
 
-  darkToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    const isDark = document.body.classList.contains("dark-mode");
-    darkToggle.textContent = isDark ? "☀️" : "🌙";
-    localStorage.setItem("darkMode", isDark ? "on" : "off");
-  });
+darkToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  darkToggle.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("darkMode", isDark ? "on" : "off");
+});
 
-  const text = "Enjoy Your helthy and delecious food...!";
-const target= document.getElementById("hero-title");
+const text = "Enjoy Your helthy and delecious food...!";
+const target = document.getElementById("hero-title");
 
-let index=0;
+let index = 0;
 function showLetter() {
   if (index < text.length) {
     target.textContent += text.charAt(index);
     index++;
-    setTimeout(showLetter,200)
+    setTimeout(showLetter, 200)
 
-    
-  }else{
-    setTimeout(()=>{
+
+  } else {
+    setTimeout(() => {
       target.textContent = "";
       index = 0;
       showLetter();
-    },1000);
+    }, 1000);
   }
-  
+
 }
 showLetter();
 
@@ -87,6 +87,7 @@ tabButtons.forEach(button => {
 
 
 
+
 const sections = document.querySelectorAll('.section, .horizontal-card, .testimonials-card');
 
 const observer = new IntersectionObserver((entries, obs) => {
@@ -96,11 +97,53 @@ const observer = new IntersectionObserver((entries, obs) => {
       obs.unobserve(entry.target); // optional: animate only once
     }
   });
-}, {
+}, 
+{
   threshold: 0.2
 });
 
 sections.forEach(section => {
   observer.observe(section);
+});
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const cartCount = document.querySelector(".cart-count");
+//   let count = 0;
+
+//   // Add to Cart buttons
+//   document.querySelectorAll(".addCart button").forEach(btn => {
+//     btn.addEventListener("click", () => {
+//       count++;
+//       cartCount.textContent = count;
+//     });
+//   });
+
+
+
+// });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cartCount = document.querySelector(".cart-count");
+  const cartItemsList = document.querySelector(".cart-items");
+  const cartTotal = document.querySelector(".total-cart");
+  let count = 0;
+  let total = 0;
+  document.querySelectorAll(".menu-item").forEach(item => {
+    const btn = item.querySelector(".addCart button");
+    btn.addEventListener("click", () => {
+      const name = item.querySelector("h3").textContent;
+      const priceText = item.querySelector(".price").textContent.replace("Rs.", "").replace("/-", "");
+      const price = parseInt(priceText);
+
+      count++;
+      total += price;
+
+      // Update cart count
+      cartCount.textContent = count;
+
+      // Add item to cart list
+  
+    });
+  });
 });
 
