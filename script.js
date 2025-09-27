@@ -1,5 +1,7 @@
 /* script.js */
 
+
+
 const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 
@@ -97,10 +99,10 @@ const observer = new IntersectionObserver((entries, obs) => {
       obs.unobserve(entry.target); // optional: animate only once
     }
   });
-}, 
-{
-  threshold: 0.2
-});
+},
+  {
+    threshold: 0.2
+  });
 
 sections.forEach(section => {
   observer.observe(section);
@@ -133,17 +135,30 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const name = item.querySelector("h3").textContent;
       const priceText = item.querySelector(".price").textContent.replace("Rs.", "").replace("/-", "");
-      const price = parseInt(priceText);
+      const price = parseFloat(priceText);
+      const img = item.querySelector("img").src;
 
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Push new item
+      cart.push({ name, price, img });
+      localStorage.setItem("cart", JSON.stringify(cart));
       count++;
       total += price;
 
       // Update cart count
-      cartCount.textContent = count;
+     cartCount.textContent = cart.length;
 
       // Add item to cart list
-  
+
     });
+
   });
+});
+
+
+document.getElementById("cartIcon").addEventListener("click", () => {
+  window.location.href = "cart.html";  // opens your cart page
 });
 

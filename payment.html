@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+
+<body>
+
+    <h2>Payment Page</h2>
+    <p>Subtotal: <span id="subtotal"></span></p>
+    <button onclick="payNow()">Pay Now</button>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+        document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
+
+        function payNow() {
+            alert("Payment Successful ✅");
+            localStorage.removeItem("cart"); // clear cart
+            window.location.href = "index.html"; // back to home
+        }
+    </script>
+
+</body>
+
+</html>
