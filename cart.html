@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Basket</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
 
 </head>
 
@@ -13,54 +15,99 @@
 
     <h2>🛒 My Basket</h2>
 
-    <div class="cart-container">
-        <div class="cart-items" id="cartItems"></div>
+  <div class="cart-container">
+    <div class="cart-items" id="cartItems"></div>
 
-        <div class="order-summary">
-            <h3>Order Summary</h3>
-            <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
-            <div class="summary-row"><span>Shipping</span><span>Free</span></div>
-            <div class="summary-row"><strong>Total</strong><strong id="total">$0.00</strong></div>
-
-            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
-
-        </div>
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
+      <div class="summary-row"><span>Shipping</span><span>Free</span></div>
+      <div class="summary-row"><strong>Total</strong><strong id="total">₹0.00</strong></div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
     </div>
+  </div>
 
-    <script>
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const cartItemsEl = document.getElementById("cartItems");
-        let subtotal = 0;
+    <div class="delivery-info" id="deliveryInfo">
+    <h3>🚚 Delivery Information</h3>
+    <p>Estimated Delivery Time:</p>
+    <p class="delivery-time" id="deliveryTime"></p>
+    <p>Thank you for choosing <strong>Foodie.com</strong> 🍴 — your order will arrive hot and fresh!</p>
+  </div>
 
-        if (cart.length === 0) {
-            cartItemsEl.innerHTML = "<p>Your cart is empty 🛒</p>";
-        } else {
-            cart.forEach(item => {
-                subtotal += item.price;
+ 
+<script>
 
-                const div = document.createElement("div");
-                div.classList.add("cart-item");
-                div.innerHTML = `
-          <div class="item-info">
-            <img src="${item.img}" alt="${item.name}">
-            <div>
-              <h4>${item.name}</h4>
-              <p>₹${item.price.toFixed(2)}</p>
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItemsEl = document.getElementById("cartItems");
+
+    function updateCart() {
+      cartItemsEl.innerHTML = "";
+      let subtotal = 0;
+
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = "<p>Your cart is empty 🛒</p>";
+      } else {
+        cart.forEach((item, index) => {
+          subtotal += item.price * item.quantity;
+          const div = document.createElement("div");
+          div.classList.add("cart-item");
+          div.innerHTML = `
+            <div class="item-info">
+              <img src="${item.img}" alt="${item.name}">
+              <div>
+                <h4>${item.name}</h4>
+                <p>₹${item.price.toFixed(2)}</p>
+                <div class="quantity-controls">
+                  <button onclick="changeQuantity(${index}, -1)">-</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="changeQuantity(${index}, 1)">+</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <span>₹${item.price.toFixed(2)}</span>
-        `;
-                cartItemsEl.appendChild(div);
-            });
-        }
+            <div>
+              <strong>₹${(item.price * item.quantity).toFixed(2)}</strong>
+              <button class="remove-btn" onclick="removeItem(${index})">Delete</button>
+            </div>
+          `;
+          cartItemsEl.appendChild(div);
+        });
+      }
 
-        document.getElementById("subtotal").innerText = `₹${subtotal.toFixed(2)}`;
-        document.getElementById("total").innerText = `₹${subtotal.toFixed(2)}`;
-        function checkout() {
-            alert("Redirecting to payment page...");
-            window.location.href = "payment.html"; // create a new payment.html
-        }
-    </script>
+      document.getElementById("subtotal").innerText = `₹${subtotal.toFixed(2)}`;
+      document.getElementById("total").innerText = `₹${subtotal.toFixed(2)}`;
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function changeQuantity(index, amount) {
+      cart[index].quantity += amount;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      updateCart();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    function checkout() {
+      alert("✅ Order placed successfully! Redirecting to payment page...");
+      window.location.href = "payment.html";
+    }
+
+    // Set delivery time dynamically
+    function setDeliveryTime() {
+      const minTime = 25;
+      const maxTime = 50;
+      const deliveryTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+      document.getElementById("deliveryTime").textContent = `${deliveryTime} - ${deliveryTime + 10} minutes`;
+    }
+
+    // Initialize
+    cart = cart.map(item => ({ ...item, quantity: item.quantity || 1 }));
+    updateCart();
+    setDeliveryTime();
+
+</script>
 
 
 </body>

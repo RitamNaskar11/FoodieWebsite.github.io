@@ -4,27 +4,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment</title>
+    <title>Payment | Foodie.com</title>
+    <link rel="stylesheet" href="css/index.css">
+
+
 </head>
 
 <body>
 
-    <h2>Payment Page</h2>
-    <p>Subtotal: <span id="subtotal"></span></p>
-    <button onclick="payNow()">Pay Now</button>
+    <div class="payment-container">
+        <h2>Complete Your Payment</h2>
+
+        <div class="section">
+            <div class="details">
+                <h3>Payment Details</h3>
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <label>Phone Number</label>
+
+                <input type="phone" id="phone" placeholder="Enter your phone number" required>
+
+                <label>Select Payment Method</label>
+                <div class="methods">
+                    <label><input type="radio" name="method" value="UPI" checked onchange="updateMethod()"> UPI</label>
+                    <label><input type="radio" name="method" value="Card" onchange="updateMethod()"> Debit / Credit
+                        Card</label>
+                    <label><input type="radio" name="method" value="COD" onchange="updateMethod()"> Cash on
+                        Delivery</label>
+                </div>
+
+                <!-- <div id="extra" class="extra"></div> -->
+                <button class="pay-btn" onclick="processPayment()">Pay Now</button>
+            </div>
+
+            <div class="summary">
+                <h3>Order Summary</h3>
+                <div id="orderItems"></div>
+                <hr>
+                <p><strong>Total:</strong> ₹<span id="total">0.00</span></p>
+            </div>
+        </div>
+
+        <div class="success" id="successBox">
+            ✅ Payment Successful!<br>
+            Your order will be delivered within <strong>30-45 minutes</strong>.<br>
+            Thank you for ordering from <b>Foodie.com 🍴</b>
+        </div>
+    </div>
 
     <script>
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-        document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        function payNow() {
-            alert("Payment Successful ✅");
-            localStorage.removeItem("cart"); // clear cart
-            window.location.href = "index.html"; // back to home
+        function loadSummary() {
+            const box = document.getElementById("orderItems");
+            let total = 0;
+            box.innerHTML = "";
+            if (cart.length === 0) {
+                box.innerHTML = "<p>Your cart is empty  </p>" +'<i class="fa-solid fa-cart-shopping"></i>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * (item.quantity || 1);
+                    box.innerHTML += `<p>${item.name} × ${item.quantity || 1} — ₹${item.price * (item.quantity || 1)}</p>`;
+                });
+            }
+            document.getElementById("total").textContent = total.toFixed(2);
         }
-    </script>
 
+        function updateMethod() {
+            const val = document.querySelector('input[name="method"]:checked').value;
+            const extra = document.getElementById("extra");
+            if (val === "UPI") {
+                extra.innerHTML = `<label>Enter UPI ID</label><input type="text" id="upi" placeholder="example@upi">`;
+            } else if (val === "Card") {
+                extra.innerHTML = `
+          <label>Card Number</label><input type="number" id="card" placeholder="1234 5678 9012 3456">
+          <label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY">
+          <label>CVV</label><input type="number" id="cvv" placeholder="123">
+        `;
+            } else {
+                extra.innerHTML = `<p style="color:green;">💵 Pay with cash at delivery.</p>`;
+            }
+        }
+
+        function processPayment() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            if (!name || !email) {
+                alert("⚠️ Please fill your details first!");
+                return;
+            }
+
+            const btn = document.querySelector(".pay-btn");
+            btn.textContent = "Processing...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById("successBox").style.display = "block";
+                btn.textContent = "Payment Done ✅";
+                localStorage.removeItem("cart");
+            }, 1200);
+        }
+
+        // Load everything on page load
+        loadSummary();
+        updateMethod();
+    </script>
+    <script src="https://kit.fontawesome.com/37e4fc56b7.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

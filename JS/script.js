@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       total += price;
 
       // Update cart count
-     cartCount.textContent = cart.length;
+      cartCount.textContent = cart.length;
 
       // Add item to cart list
 
@@ -158,7 +158,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
+
 document.getElementById("cartIcon").addEventListener("click", () => {
   window.location.href = "cart.html";  // opens your cart page
+
+  
 });
 

@@ -961,4 +961,10 @@
     #menu .section {
       padding: 4px 9px;
     }
+
+    .cart-container {
+    bottom: 720px;
+    right: 338px;
+     
+  }
   }
