@@ -9,20 +9,20 @@
    color: #333;
  }
 
- .cart-container {
+ /* .cart-container {
    display: flex;
    justify-content: space-between;
    gap: 20px;
    flex-wrap: wrap;
- }
+ } */
 
- .cart-items {
+ /* .cart-items {
    flex: 2;
    background: #fff;
    padding: 20px;
    border-radius: 10px;
    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
- }
+ } */
 
  .cart-item {
    display: flex;
@@ -31,6 +31,7 @@
    border-bottom: 1px solid #ddd;
    padding: 15px 0;
  }
+ 
 
  .item-info {
    display: flex;
