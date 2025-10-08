@@ -12,7 +12,7 @@
 
 <body>
 
-    <div class="payment-container">
+    <!-- <div class="payment-container"> -->
         <h2>Complete Your Payment</h2>
 
         <div class="section">
@@ -35,7 +35,8 @@
                         Delivery</label>
                 </div>
 
-                <!-- <div id="extra" class="extra"></div> -->
+                <div id="extra" class="extra-box"></div>
+
                 <button class="pay-btn" onclick="processPayment()">Pay Now</button>
             </div>
 
@@ -62,11 +63,11 @@
             let total = 0;
             box.innerHTML = "";
             if (cart.length === 0) {
-                box.innerHTML = "<p>Your cart is empty  </p>" +'<i class="fa-solid fa-cart-shopping"></i>';
+                box.innerHTML = "<p>Your cart is empty 🛒</p>";
             } else {
                 cart.forEach(item => {
                     total += item.price * (item.quantity || 1);
-                    box.innerHTML += `<p>${item.name} × ${item.quantity || 1} — ₹${item.price * (item.quantity || 1)}</p>`;
+                    box.innerHTML += `<p>${item.name} x ${item.quantity || 1} — ₹${item.price * (item.quantity || 1)}</p>`;
                 });
             }
             document.getElementById("total").textContent = total.toFixed(2);
@@ -75,16 +76,25 @@
         function updateMethod() {
             const val = document.querySelector('input[name="method"]:checked').value;
             const extra = document.getElementById("extra");
+
             if (val === "UPI") {
-                extra.innerHTML = `<label>Enter UPI ID</label><input type="text" id="upi" placeholder="example@upi">`;
+                extra.innerHTML = `
+        <p>Scan to Pay via UPI:</p>
+        <img src="img/QR_code.jpg" alt="UPI QR" width="150" style="border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+        <label>Or Enter UPI ID</label>
+        <input type="text" id="upi" placeholder="example@upi">
+      `;
             } else if (val === "Card") {
                 extra.innerHTML = `
-          <label>Card Number</label><input type="number" id="card" placeholder="1234 5678 9012 3456">
-          <label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY">
-          <label>CVV</label><input type="number" id="cvv" placeholder="123">
-        `;
+        <label>Card Number</label>
+        <input type="number" id="card" placeholder="1234 5678 9012 3456">
+        <label>Expiry</label>
+        <input type="text" id="expiry" placeholder="MM/YY">
+        <label>CVV</label>
+        <input type="number" id="cvv" placeholder="123">
+      `;
             } else {
-                extra.innerHTML = `<p style="color:green;">💵 Pay with cash at delivery.</p>`;
+                extra.innerHTML = `<p style="color:green; font-weight:600;">💵 Pay with cash upon delivery. No online payment needed.</p>`;
             }
         }
 
