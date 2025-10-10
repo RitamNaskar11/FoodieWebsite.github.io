@@ -13,10 +13,15 @@
 
 <body>
 
-    <h2>🛒 My Basket</h2>
+   <h2>🛒 My Basket</h2>
 
   <div class="cart-container">
-    <div class="cart-items" id="cartItems" style="text-align: center; margin: 30px;" ></div>
+   
+    <div class="cart-items" id="cartItems"  >
+      
+     
+    </div>
+    
 
     <div class="order-summary">
       <h3>Order Summary</h3>
@@ -45,7 +50,7 @@
       let subtotal = 0;
 
       if (cart.length === 0) {
-        cartItemsEl.innerHTML = "<p>Your cart is empty 🛒</p>";
+        cartItemsEl.innerHTML = "<p>Your cart is empty 🛒 </p>";
       } else {
         cart.forEach((item, index) => {
           subtotal += item.price * item.quantity;
