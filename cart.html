@@ -6,24 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Basket</title>
     <link rel="stylesheet" href="css/index.css">
+
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
 
 </head>
 
-<body>
 
-   <h2>🛒 My Basket</h2>
 
-  <div class="cart-container">
-   
-    <div class="cart-items" id="cartItems"  >
-      
-     
+  <body>
+
+      <nav class="navmenu">
+
+
+
+    <div class="logo">
+      <a href="#hero">Foddie<span>.com</span> </a>
+
     </div>
-    
 
-    <div class="order-summary">
+
+
+  
+
+
+
+    <!-- <button id="darkToggle" class="dark-btn">🌙</button>
+    <button id="menu-toggle" aria-label="Toggle menu" class="menu-toggle" type="button">
+      ☰ -->
+
+
+  </nav>
+
+  <div class="cart-container" id="cartContainer">
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="order-summary" id="orderSummary">
       <h3>Order Summary</h3>
       <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
       <div class="summary-row"><span>Shipping</span><span>Free</span></div>
@@ -32,33 +50,49 @@
     </div>
   </div>
 
-    <div class="delivery-info" id="deliveryInfo">
+  <div class="delivery-info" id="deliveryInfo">
     <h3>🚚 Delivery Information</h3>
     <p>Estimated Delivery Time:</p>
     <p class="delivery-time" id="deliveryTime"></p>
     <p>Thank you for choosing <strong>Foodie.com</strong> 🍴 — your order will arrive hot and fresh!</p>
   </div>
 
- 
-<script>
+  <!-- Empty Cart Message -->
+  <div class="empty-cart" id="emptyCart" style="display: none;">
+    <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart" />
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added any delicious items yet. Browse our menu and start ordering now!</p>
+    <button onclick="window.location.href='index.html'">Start Ordering</button>
+  </div>
 
+  <script>
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const cartItemsEl = document.getElementById("cartItems");
+    const orderSummaryEl = document.getElementById("orderSummary");
+    const emptyCartEl = document.getElementById("emptyCart");
+    const deliveryInfoEl = document.getElementById("deliveryInfo");
+    const cartContainerEl = document.getElementById("cartContainer");
 
     function updateCart() {
       cartItemsEl.innerHTML = "";
       let subtotal = 0;
 
       if (cart.length === 0) {
-        cartItemsEl.innerHTML = "<p>Your cart is empty 🛒 </p>";
+        cartContainerEl.style.display = "none";
+        deliveryInfoEl.style.display = "none";
+        emptyCartEl.style.display = "block";
       } else {
+        cartContainerEl.style.display = "flex";
+        deliveryInfoEl.style.display = "block";
+        emptyCartEl.style.display = "none";
+
         cart.forEach((item, index) => {
           subtotal += item.price * item.quantity;
           const div = document.createElement("div");
           div.classList.add("cart-item");
           div.innerHTML = `
             <div class="item-info">
-              <img src="${item.img}" alt="${item.name}">
+              <img src="${item.img}" alt="${item.name}" width="50">
               <div>
                 <h4>${item.name}</h4>
                 <p>₹${item.price.toFixed(2)}</p>
@@ -99,7 +133,6 @@
       window.location.href = "payment.html";
     }
 
-    // Set delivery time dynamically
     function setDeliveryTime() {
       const minTime = 25;
       const maxTime = 50;
@@ -107,12 +140,10 @@
       document.getElementById("deliveryTime").textContent = `${deliveryTime} - ${deliveryTime + 10} minutes`;
     }
 
-    // Initialize
     cart = cart.map(item => ({ ...item, quantity: item.quantity || 1 }));
     updateCart();
     setDeliveryTime();
-
-</script>
+  </script>
 
 
 </body>
